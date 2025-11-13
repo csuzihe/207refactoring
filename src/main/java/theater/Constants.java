@@ -10,7 +10,7 @@ public final class Constants {
     public static final int COMEDY_EXTRA_VOLUME_FACTOR = 5;
     // comedy amount constants
     public static final int COMEDY_AMOUNT_PER_AUDIENCE = 300;
-    public final static int COMEDY_AUDIENCE_THRESHOLD = 20;
+    public static final int COMEDY_AUDIENCE_THRESHOLD = 20;
     public static final int COMEDY_BASE_AMOUNT = 30000;
     public static final int COMEDY_OVER_BASE_CAPACITY_AMOUNT = 10000;
     public static final int COMEDY_OVER_BASE_CAPACITY_PER_PERSON = 500;
@@ -20,6 +20,7 @@ public final class Constants {
     public static final int TRAGEDY_OVER_BASE_CAPACITY_PER_PERSON = 1000;
     // formatting constants
     public static final int PERCENT_FACTOR = 100;
+    public static final int CENTS_PER_DOLLAR = 100;
     // history constants
     public static final int HISTORY_BASE_AMOUNT = 20000;
     public static final int HISTORY_OVER_BASE_CAPACITY_PER_PERSON = 1000;

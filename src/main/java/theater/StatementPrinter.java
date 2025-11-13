@@ -75,6 +75,17 @@ public class StatementPrinter {
     }
 
     /**
+     * Format the given amount (in cents) as a US dollar currency string.
+     *
+     * @param amount the amount in cents
+     * @return a formatted currency string in US locale
+     */
+    private String usd(int amount) {
+        final NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
+        return frmt.format(amount / Constants.CENTS_PER_DOLLAR);
+    }
+
+    /**
      * Returns a formatted statement of the invoice associated with this printer.
      *
      * @return the formatted statement
@@ -86,9 +97,6 @@ public class StatementPrinter {
         final StringBuilder result = new StringBuilder(
                 "Statement for " + invoice.getCustomer() + System.lineSeparator()
         );
-
-        final NumberFormat frmt =
-                NumberFormat.getCurrencyInstance(Locale.US);
 
         for (Performance p : invoice.getPerformances()) {
             final Play play = plays.get(p.getPlayID());
@@ -103,7 +111,7 @@ public class StatementPrinter {
             result.append(String.format(
                     "  %s: %s (%s seats)%n",
                     play.getName(),
-                    frmt.format(thisAmount / Constants.CENTS_PER_DOLLAR),
+                    usd(thisAmount),
                     p.getAudience()
             ));
 
@@ -112,7 +120,7 @@ public class StatementPrinter {
 
         result.append(String.format(
                 "Amount owed is %s%n",
-                frmt.format(totalAmount / Constants.CENTS_PER_DOLLAR)
+                usd(totalAmount)
         ));
         result.append(String.format(
                 "You earned %s credits%n",

@@ -18,6 +18,16 @@ public class StatementPrinter {
     }
 
     /**
+     * Get the play information for a given performance.
+     *
+     * @param performance the performance
+     * @return the corresponding play
+     */
+    private Play getPlay(Performance performance) {
+        return plays.get(performance.getPlayID());
+    }
+
+    /**
      * Compute the amount for a single performance.
      *
      * @param performance    the performance
@@ -93,7 +103,7 @@ public class StatementPrinter {
     private int getTotalAmount() {
         int totalAmount = 0;
         for (Performance performance : invoice.getPerformances()) {
-            final Play play = plays.get(performance.getPlayID());
+            final Play play = getPlay(performance);
             totalAmount += getAmount(performance, play);
         }
         return totalAmount;
@@ -107,7 +117,7 @@ public class StatementPrinter {
     private int getTotalVolumeCredits() {
         int volumeCredits = 0;
         for (Performance performance : invoice.getPerformances()) {
-            final Play play = plays.get(performance.getPlayID());
+            final Play play = getPlay(performance);
             volumeCredits += getVolumeCredits(performance, play);
         }
         return volumeCredits;
@@ -127,7 +137,7 @@ public class StatementPrinter {
         );
 
         for (Performance p : invoice.getPerformances()) {
-            final Play play = plays.get(p.getPlayID());
+            final Play play = getPlay(p);
             final int thisAmount = getAmount(p, play);
 
             result.append(String.format(

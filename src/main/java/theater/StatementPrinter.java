@@ -86,36 +86,56 @@ public class StatementPrinter {
     }
 
     /**
+     * Compute the total amount owed for all performances on this invoice.
+     *
+     * @return the total amount in cents
+     */
+    private int getTotalAmount() {
+        int totalAmount = 0;
+        for (Performance performance : invoice.getPerformances()) {
+            final Play play = plays.get(performance.getPlayID());
+            totalAmount += getAmount(performance, play);
+        }
+        return totalAmount;
+    }
+
+    /**
+     * Compute the total volume credits for all performances on this invoice.
+     *
+     * @return the total volume credits
+     */
+    private int getTotalVolumeCredits() {
+        int volumeCredits = 0;
+        for (Performance performance : invoice.getPerformances()) {
+            final Play play = plays.get(performance.getPlayID());
+            volumeCredits += getVolumeCredits(performance, play);
+        }
+        return volumeCredits;
+    }
+
+    /**
      * Returns a formatted statement of the invoice associated with this printer.
      *
      * @return the formatted statement
      * @throws RuntimeException if one of the play types is not known
      */
     public String statement() {
-        int totalAmount = 0;
-        int volumeCredits = 0;
+        final int totalAmount = getTotalAmount();
+        final int volumeCredits = getTotalVolumeCredits();
         final StringBuilder result = new StringBuilder(
                 "Statement for " + invoice.getCustomer() + System.lineSeparator()
         );
 
         for (Performance p : invoice.getPerformances()) {
             final Play play = plays.get(p.getPlayID());
-
-            // compute order amount
             final int thisAmount = getAmount(p, play);
 
-            // add extra credit for every five comedy attendees
-            volumeCredits += getVolumeCredits(p, play);
-
-            // print line for this order
             result.append(String.format(
                     "  %s: %s (%s seats)%n",
                     play.getName(),
                     usd(thisAmount),
                     p.getAudience()
             ));
-
-            totalAmount += thisAmount;
         }
 
         result.append(String.format(
